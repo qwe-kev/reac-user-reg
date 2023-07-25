@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Card from "../UI/Card";
 import classes from "../Users/AddUser.module.css";
 import Button from "../UI/Button";
@@ -9,23 +9,31 @@ const AddUser = (props) => {
   const [enteredAge, setEnteredAge] = useState(" ");
   const [error, setError] = useState();
 
-  const handleNameChange = (event) => {
-    setEnteredUserName(event.target.value);
-  };
+  const enteredName = useRef(0);
+  const enteredUserAge = useRef(0);
+  const enteredCollege = useRef(0);
 
-  const handleAgeChange = (event) => {
-    setEnteredAge(event.target.value);
-  };
+  // const handleNameChange = (event) => {
+  //   setEnteredUserName(event.target.value);
+  // };
+
+  // const handleAgeChange = (event) => {
+  //   setEnteredAge(event.target.value);
+  // };
   const AddUserHandler = (event) => {
     event.preventDefault();
-    if (enteredUserName.trim().length === 0 || enteredAge.trim().length === 0) {
+    if (
+      enteredName.current.value == 0 ||
+      enteredUserAge.current.value == 0 ||
+      enteredCollege.current.value == 0
+    ) {
       setError({
         title: "An error occured",
-        message: "please enter name and age",
+        message: "please enter name, age and college",
       });
       return;
     }
-    if (+enteredAge < 1) {
+    if (+enteredUserAge < 1) {
       setError({
         title: "An error occured",
         message: "Age must be atleast 1",
@@ -33,9 +41,16 @@ const AddUser = (props) => {
       return;
     }
 
-    props.onSubmitForm({ name: enteredUserName, age: enteredAge });
-    setEnteredUserName(" ");
-    setEnteredAge(" ");
+    props.onSubmitForm({
+      name: enteredName.current.value,
+      age: enteredUserAge.current.value,
+      college: enteredCollege.current.value,
+    });
+    enteredName.current.value = " ";
+    enteredUserAge.current.value = " ";
+    enteredCollege.current.value = " ";
+    // setEnteredUserName(" ");
+    // setEnteredAge(" ");
   };
 
   const onConfirm = () => {
@@ -56,16 +71,20 @@ const AddUser = (props) => {
           <input
             type="text"
             id="name"
-            onChange={handleNameChange}
-            value={enteredUserName}
+            ref={enteredName}
+            // onChange={handleNameChange}
+            // value={enteredUserName}
           ></input>
           <label htmlFor="age">Age(years)</label>
           <input
             type="number"
             id="age"
-            onChange={handleAgeChange}
-            value={enteredAge}
+            // onChange={handleAgeChange}
+            // value={enteredAge}
+            ref={enteredUserAge}
           ></input>
+          <label htmlFor="college">College</label>
+          <input type="text" ref={enteredCollege}></input>
           <Button type="button" onClick={AddUserHandler}>
             Add user
           </Button>

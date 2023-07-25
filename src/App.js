@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import AddUser from "./components/Users/AddUser";
 import UsersList from "./components/Users/UsersList";
 
-const dummy_users = [{ id: Math.random().toString(), name: "kev", age: 27 }];
+const dummy_users = [];
 function App() {
   const [addUser, setAddUser] = useState(dummy_users);
 
